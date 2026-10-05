@@ -218,3 +218,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# thyra: run outputs and the raw publisher files stay out; the snapshot under data/snapshot is committed
+out/
+data/raw/
+scratch/
+*.pptx
+*.pdf

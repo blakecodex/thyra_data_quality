@@ -1,0 +1,144 @@
+{
+  "snapshot_written_utc": "2026-10-05T03:09:19Z",
+  "window": {
+    "start": "2025-10-01",
+    "end": "2026-01-31"
+  },
+  "isos": [
+    "nyiso"
+  ],
+  "time_conventions": {
+    "nyiso": "local clock time with no time zone column; hourly files carry hour-beginning labels, the five-minute file carries interval-end stamps; the fall-back day repeats an hour and is counted by position; isolf is wide by zone, each file holds the forecasts issued that day for six days ahead"
+  },
+  "sources": {
+    "nyiso": "https://mis.nyiso.com/public/csv/{damlbmp|realtime|rtlbmp}/{YYYYMM}01{kind}_zone_csv.zip and /isolf/{YYYYMM}01isolf_csv.zip"
+  },
+  "files": {
+    "nyiso_da_zone_hourly.csv.gz": {
+      "rows": 44295,
+      "columns": [
+        "file_day",
+        "time_stamp",
+        "zone",
+        "ptid",
+        "lbmp",
+        "losses",
+        "congestion"
+      ],
+      "sha256": "46535bb6472c3a4d09d7d8630c77cedbd2c20e3e727d492c86823296d544a521"
+    },
+    "nyiso_rt_zone_5min.csv.gz": {
+      "rows": 542325,
+      "columns": [
+        "file_day",
+        "time_stamp",
+        "zone",
+        "ptid",
+        "lbmp",
+        "losses",
+        "congestion"
+      ],
+      "sha256": "a290bbb2b7076a6416b76cc6ab04c0e6bc9aad9ba39889bf3dbb6b0e6cbd3ccd"
+    },
+    "nyiso_rt_zone_hourly_integrated.csv.gz": {
+      "rows": 44295,
+      "columns": [
+        "file_day",
+        "time_stamp",
+        "zone",
+        "ptid",
+        "lbmp",
+        "losses",
+        "congestion"
+      ],
+      "sha256": "fff58b1a054f4cf64e71fc0913d894113bf83fdc257989dee580dfc74fb7cade"
+    },
+    "nyiso_load_forecast_zone_hourly.csv.gz": {
+      "rows": 17718,
+      "columns": [
+        "file_day",
+        "Time Stamp",
+        "Capitl",
+        "Centrl",
+        "Dunwod",
+        "Genese",
+        "Hud Vl",
+        "Longil",
+        "Mhk Vl",
+        "Millwd",
+        "N.Y.C.",
+        "North",
+        "West",
+        "NYISO"
+      ],
+      "sha256": "e450fead0147cd256face6bbdac9b5ef04c7bf840f80e159cd7ac4d09910b6c3"
+    }
+  },
+  "raw_files": {
+    "nyiso/20251001damlbmp_zone_csv.zip": {
+      "bytes": 111125,
+      "sha256": "d328abff79d49ddf0300b31102a54ac8188e387f28423b9add78aadb08db9cde"
+    },
+    "nyiso/20251001isolf_csv.zip": {
+      "bytes": 138328,
+      "sha256": "c22d7e09ee69f6e10a740daa847b4ccb8fbda497d2a07400282dc638fee122da"
+    },
+    "nyiso/20251001realtime_zone_csv.zip": {
+      "bytes": 1124421,
+      "sha256": "b315a75853e667ef7506b573b4428444b3b6ef99cb38201721d66ee17bc15514"
+    },
+    "nyiso/20251001rtlbmp_zone_csv.zip": {
+      "bytes": 115386,
+      "sha256": "3292259b11a62a13bc4243ae72ee2b08122ffedf3c8611432fa16d0891b7d6d1"
+    },
+    "nyiso/20251101damlbmp_zone_csv.zip": {
+      "bytes": 108869,
+      "sha256": "a7761c608e37da08982b9514929726318f46faf3ec4920933dabbb9476ce8698"
+    },
+    "nyiso/20251101isolf_csv.zip": {
+      "bytes": 134977,
+      "sha256": "f9edd8af11a6ab03c63a3ec1909aa0476cc8bf011866941e2a79b8ccf6659944"
+    },
+    "nyiso/20251101realtime_zone_csv.zip": {
+      "bytes": 1080062,
+      "sha256": "56d0758a2096b5cb49434a7fa193fd2b189794660188a9dd83e3a5505cc925b8"
+    },
+    "nyiso/20251101rtlbmp_zone_csv.zip": {
+      "bytes": 112705,
+      "sha256": "126b127d37da87a81312750dca2c8eb8815ea844383006f9abccee48f4dcdec9"
+    },
+    "nyiso/20251201damlbmp_zone_csv.zip": {
+      "bytes": 122191,
+      "sha256": "c4ea75c17f000ffa0a03196ebc7ed83cb3870c2b0c6e82c749ade312902a9cb9"
+    },
+    "nyiso/20251201isolf_csv.zip": {
+      "bytes": 141995,
+      "sha256": "8a2812ce4299f235178a40d9653ff5dc124a487100919986c3ea36bf9d186d9a"
+    },
+    "nyiso/20251201realtime_zone_csv.zip": {
+      "bytes": 1196570,
+      "sha256": "69f54e9f6cce139a9a653b686713b5d112ee3389d56c4d19c91fcdb3eaa09351"
+    },
+    "nyiso/20251201rtlbmp_zone_csv.zip": {
+      "bytes": 124869,
+      "sha256": "53e3dde7e2cfce54d6363b180e620c408be9016ec423d69ba030d73771daecb0"
+    },
+    "nyiso/20260101damlbmp_zone_csv.zip": {
+      "bytes": 122297,
+      "sha256": "c013ec7661a85cd5de24ebe60934946db62bbb7f9a664067a2b3baf004278d15"
+    },
+    "nyiso/20260101isolf_csv.zip": {
+      "bytes": 141733,
+      "sha256": "101e631c09c2ec0501868d87db1749e8e0217942c789ee1c9d29b130421273f3"
+    },
+    "nyiso/20260101realtime_zone_csv.zip": {
+      "bytes": 1255357,
+      "sha256": "6b09bfa1f9d943f4503c4fdb9cf54b2270bea3f521c0a0232f059ec9fb300e38"
+    },
+    "nyiso/20260101rtlbmp_zone_csv.zip": {
+      "bytes": 128844,
+      "sha256": "a50da94b514dc5988cc777b3d7f75481eeb931e8d7429c6d467c4581b4e69dbb"
+    }
+  },
+  "missing": []
+}

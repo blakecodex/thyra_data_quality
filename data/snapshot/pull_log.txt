@@ -1,0 +1,5 @@
+23:09:18  window 2025-10-01 to 2026-01-31; raw -> /home/claude/thyra_build/thyra_data_quality/data/raw
+23:09:19  snapshot nyiso_da_zone_hourly: 44,295 rows
+23:09:24  snapshot nyiso_rt_zone_5min: 542,325 rows
+23:09:24  snapshot nyiso_rt_zone_hourly_integrated: 44,295 rows
+23:09:24  snapshot nyiso_load_forecast_zone_hourly: 17,718 rows

@@ -1,0 +1,74 @@
+# the release gate, as data. every threshold has its reason next to it.
+# a threshold changes through a pull request, so the reason travels with the change.
+suite: thyra-release-gate
+version: 1
+
+split_day: 92          # train on the first 92 local days of the snapshot, october through december
+monitor_from_day: 115  # the gate scores days 92 to 114, january 1 to 23; from january 24 the data is what production saw after the release
+reference_days: 60     # the last 60 training days are the reference for the drift check
+reconcile_tolerance: 2.0   # $/MWh; two hourly copies further apart than this count as a disagreement
+seed: 7                # the bootstrap seed; the data is real and needs none
+
+# the features the drift check gates. the day-ahead price and the load forecast have to be
+# stable from one window to the next for the model to mean anything, and a jump in them is a
+# feed change: a renamed column, a unit slip, a new publisher. the lagged spreads carry the
+# season; their index moves with the calendar and says nothing about the feed, so they are
+# printed for the reader and watched by the coverage check instead.
+drift_features: [price_da, load_forecast_mw]
+
+checks:
+  # ---- data at the door and in the warehouse
+  quarantine_rate:
+    family: data_quality
+    op: "<="
+    threshold: 0.005
+    why: a row that fails the contract is quarantined with a reason. on this feed the background rate is zero; half a percent means the publisher changed something
+  hour_count_days_wrong:
+    family: data_quality
+    op: "=="
+    threshold: 0
+    why: every hub-day must hold exactly the hours the calendar gives it, 24, or 23 and 25 on the clock-change days. a wrong count is a missing hour, a duplicated hour or an hour labelled into the wrong day
+  duplicate_conflicts:
+    family: integrity
+    op: "=="
+    threshold: 0
+    why: a file loaded twice is a retry and its exact copies are dropped. two copies that disagree are a conflict; the first is kept and the release is held until a person says which is right
+  reconcile_share_off:
+    family: reconciliation
+    op: "<="
+    threshold: 0.02
+    why: the desk's hourly integration of the five-minute price and the publisher's hourly price are two copies of one number. on this snapshot 0.8% of hours differ by more than two dollars, almost all of them spike hours; two percent means one of the copies has changed
+  reconcile_mean_abs:
+    family: reconciliation
+    op: "<="
+    threshold: 0.5
+    why: the mean gap between the two copies is nine cents on this snapshot. fifty cents means the integration or the feed has changed in a way the desk would trade on
+
+  # ---- the candidate against the champion on the held-out window
+  overall_improvement:
+    family: accuracy
+    op: "<"
+    threshold: 0.0
+    why: the value is the upper edge of the 95% band on the paired difference in mean absolute error, challenger minus champion. below zero means the challenger is better by more than noise. a band that straddles zero holds the release; a point estimate alone can promote on luck
+  peak_no_regression:
+    family: regression
+    op: "<="
+    threshold: 0.0
+    why: the value is the lower edge of the same band on the peak hours only. above zero means the challenger is worse at the peak by more than noise. a model that wins on average and loses where the money is does not ship
+  hub_no_regression:
+    family: bias
+    op: "<="
+    threshold: 0.0
+    why: the value is the worst lower edge across hubs. the same question as the peak check, cut by segment, so a hub that the challenger serves badly is not hidden by the average
+  band_coverage:
+    family: calibration
+    op: within
+    threshold: [0.85, 0.95]
+    why: the challenger promises a 90% band. on several thousand held-out hours the binomial noise on coverage is under a percent, so the allowance is for the held-out window being a different season, not for noise
+
+  # ---- the inputs the model will see
+  psi_max:
+    family: drift
+    op: "<="
+    threshold: 0.25
+    why: the worst population stability index across the gated features (drift_features above), held-out window against the last sixty training days, with guarded bins. with no change the index reads near 0.003 at these sizes; between 0.10 and 0.25 the season is moving, which it does every january; above 0.25 the feed is the likelier cause, and a unit slip in the load forecast reads above 5. the seasonal features are printed beside it and left out of the maximum, for the reason given above

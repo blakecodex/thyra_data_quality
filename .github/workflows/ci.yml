@@ -1,0 +1,39 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install -r requirements.txt
+      - name: tests
+        run: python -m pytest -q
+      - name: the gate on the snapshot ships the clean release
+        run: python -m thyra.gate --quiet --out out/clean
+      - name: the gate holds the seeded release
+        shell: bash
+        run: |
+          set +e
+          python -m thyra.gate --quiet --out out/seeded --inject hour_shift,conflict,skew
+          code=$?
+          set -e
+          test "$code" -eq 2
+      - name: triage drafts the incident note without a model
+        run: python -m thyra.triage out/seeded --batch
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gate-reports-${{ matrix.os }}-${{ matrix.python }}
+          path: out/
